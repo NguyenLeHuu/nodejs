@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const dishRouter = express.Router();
+const leaderRouter = express.Router();
 
-dishRouter.use(bodyParser.json());
+leaderRouter.use(bodyParser.json());
 
-dishRouter
+leaderRouter
   .route("/")
   .all((req, res, next) => {
     res.statusCode = 200;
@@ -31,7 +31,7 @@ dishRouter
     res.end("Deleting all dishes");
   });
 
-dishRouter
+leaderRouter
   .route("/:dishId")
   .all((req, res, next) => {
     res.statusCode = 200;
@@ -39,7 +39,7 @@ dishRouter
     next();
   })
   .get((req, res, next) => {
-    res.end("will send dishID "+req.params.dishId);
+    res.end(req.params.dishId);
   })
   .post((req, res, next) => {
     res.end("POST operation not supported on /dishes/" + req.params.dishId);
@@ -58,4 +58,4 @@ dishRouter
     res.end("Deleting dish: " + req.params.dishId);
   });
 
-module.exports = dishRouter;
+module.exports = leaderRouter;
