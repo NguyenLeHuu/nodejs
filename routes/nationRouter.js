@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const promoRouter = express.Router();
+const nationRouter = express.Router();
 
-promoRouter.use(bodyParser.json());
+nationRouter.use(bodyParser.json());
 
-promoRouter
+nationRouter
   .route("/")
   .all((req, res, next) => {
     res.statusCode = 200;
@@ -13,11 +13,11 @@ promoRouter
     next();
   })
   .get((req, res, next) => {
-    res.end("Will send all the dishes to you!");
+    res.end("Will send all the nations to you!");
   })
   .post((req, res, next) => {
     res.end(
-      "Will add the dish: " +
+      "Will add the nation: " +
         req.body.name +
         " with details: " +
         req.body.description
@@ -25,37 +25,37 @@ promoRouter
   })
   .put((req, res, next) => {
     res.statusCode = 403;
-    res.end("PUT operation not supported on /dishes");
+    res.end("PUT operation not supported on /nations");
   })
   .delete((req, res, next) => {
-    res.end("Deleting all dishes");
+    res.end("Deleting all nations");
   });
 
-promoRouter
-  .route("/:dishId")
+nationRouter
+  .route("/:nationID")
   .all((req, res, next) => {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/plain");
     next();
   })
   .get((req, res, next) => {
-    res.end(req.params.dishId);
+    res.end(`Get nation has ID: ${req.params.nationID}`);
   })
   .post((req, res, next) => {
-    res.end("POST operation not supported on /dishes/" + req.params.dishId);
+    res.end("POST operation not supported on /nations/" + req.params.nationID);
   })
   .put((req, res, next) => {
     res.statusCode = 403;
-    res.write("Updating the dish: " + req.params.dishId + "\n");
+    res.write("Updating the nation has ID: " + req.params.nationID + "\n");
     res.end(
-      "Will update the dish: " +
+      "Will update the nation: " +
         req.body.name +
         " with details: " +
         req.body.description
     );
   })
   .delete((req, res, next) => {
-    res.end("Deleting dish: " + req.params.dishId);
+    res.end("Deleting nation has ID: " + req.params.nationID);
   });
 
-module.exports = promoRouter;
+module.exports = nationRouter;

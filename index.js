@@ -2,7 +2,7 @@ const express = require("express"),
   http = require("http");
 
 const hostname = "localhost";
-const port = 3000;
+const port = 5000;
 
 // const morgan = require('morgan');
 const bodyParser = require("body-parser");
@@ -20,7 +20,7 @@ const app = express();
 
 // app.use(express.static(__dirname + '/public'));
 
-// app.use(bodyParser.json());
+ app.use(bodyParser.json());
 
 // app.all("/dishes", (req, res, next) => {
 //   res.statusCode = 200;
@@ -72,13 +72,13 @@ const app = express();
 //   res.end("Deleting dish: " + req.params.dishId);
 // });
 
-const dishRouter = require("./routes/dishRouter");
-const promoRouter = require("./routes/promoRouter");
-const leaderRouter = require("./routes/leaderRouter");
+// const dishRouter = require("./routes/dishRouter");
+const nationRouter = require("./routes/nationRouter");
+const playerRouter = require("./routes/playerRouter");
 
-app.use("/dishes", dishRouter);
-app.use("/promotions", promoRouter);
-app.use("/leaders", leaderRouter);
+// app.use("/dishes", dishRouter);
+app.use("/nations", nationRouter);
+app.use("/players", playerRouter);
 
 app.use("/", (req, res, next) => {
   res.statusCode = 200;

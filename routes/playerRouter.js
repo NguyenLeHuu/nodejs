@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const leaderRouter = express.Router();
+const playerRouter  = express.Router();
 
-leaderRouter.use(bodyParser.json());
+playerRouter.use(bodyParser.json());
 
-leaderRouter
+playerRouter 
   .route("/")
   .all((req, res, next) => {
     res.statusCode = 200;
@@ -13,11 +13,11 @@ leaderRouter
     next();
   })
   .get((req, res, next) => {
-    res.end("Will send all the dishes to you!");
+    res.end("Will send all the players to you!");
   })
   .post((req, res, next) => {
     res.end(
-      "Will add the dish: " +
+      "Will add the player: " +
         req.body.name +
         " with details: " +
         req.body.description
@@ -25,37 +25,37 @@ leaderRouter
   })
   .put((req, res, next) => {
     res.statusCode = 403;
-    res.end("PUT operation not supported on /dishes");
+    res.end("PUT operation not supported on /players");
   })
   .delete((req, res, next) => {
-    res.end("Deleting all dishes");
+    res.end("Deleting all players");
   });
 
-leaderRouter
-  .route("/:dishId")
+playerRouter 
+  .route("/:playerID")
   .all((req, res, next) => {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/plain");
     next();
   })
   .get((req, res, next) => {
-    res.end(req.params.dishId);
+    res.end(`Get player has ID: ${req.params.playerID}`);
   })
   .post((req, res, next) => {
-    res.end("POST operation not supported on /dishes/" + req.params.dishId);
+    res.end("POST operation not supported on /players/" + req.params.playerID);
   })
   .put((req, res, next) => {
     res.statusCode = 403;
-    res.write("Updating the dish: " + req.params.dishId + "\n");
+    res.write("Updating the player has ID: " + req.params.playerID + "\n");
     res.end(
-      "Will update the dish: " +
+      "Will update the player: " +
         req.body.name +
         " with details: " +
         req.body.description
     );
   })
   .delete((req, res, next) => {
-    res.end("Deleting dish: " + req.params.dishId);
+    res.end("Deleting player has ID: " + req.params.playerID);
   });
 
-module.exports = leaderRouter;
+module.exports = playerRouter ;
