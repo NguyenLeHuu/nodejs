@@ -4,87 +4,60 @@ const express = require("express"),
 const hostname = "localhost";
 const port = 5000;
 
-// const morgan = require('morgan');
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+// const low = require("lowdb");
+
+const cors = require("cors");
+const morgan = require('morgan');
 const bodyParser = require("body-parser");
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   console.log(req.headers);
-//   res.statusCode = 200;
-//   res.setHeader("Content-Type", "text/html");
-//   res.end("<html><body><h1>This is an Express Server</h1></body></html>");
-// });
-
-// app.use(morgan('dev'));
-
-// app.use(express.static(__dirname + '/public'));
-
  app.use(bodyParser.json());
 
-// app.all("/dishes", (req, res, next) => {
-//   res.statusCode = 200;
-//   res.setHeader("Content-Type", "text/plain");
-//   next();
-// });
+//  const FileSync = require("lowdb/adapters/FileSync");
 
-// app.get("/dishes", (req, res, next) => {
-//   res.end("Will send all the dishes to you!");
-// });
+//  const adapter = new FileSync("db.json");
+//  const db = low(adapter);
+ 
+//  db.defaults({ books: [] }).write();
 
-// app.post("/dishes", (req, res, next) => {
-//   res.end(
-//     "Will add the dish: " +
-//       req.body.name +
-//       " with details: " +
-//       req.body.description
-//   );
-// });
+ const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Library API",
+      version: "1.0.0",
+      description: "A simple Express Library API"
+    },
+    servers: [
+      {
+        url: "https://localhost:5000"
+      }
+    ]
+  },
+  apis: ["./routes/*.js"]
+};
 
-// app.put("/dishes", (req, res, next) => {
-//   res.statusCode = 403;
-//   res.end("PUT operation not supported on /dishes");
-// });
-
-// app.delete("/dishes", (req, res, next) => {
-//   res.end("Deleting all dishes");
-// });
-
-// app.get("/dishes/:dishId", (req, res, next) => {
-//   res.end("Will send details of the dish: " + req.params.dishId + " to you!");
-// });
-// app.post("/dishes/:dishId", (req, res, next) => {
-//   res.statusCode = 403;
-//   res.end("POST operation not supported on /dishes/" + req.params.dishId);
-// });
-
-// app.put("/dishes/:dishId", (req, res, next) => {
-//   res.write("Updating the dish: " + req.params.dishId + "\n");
-//   res.end(
-//     "Will update the dish: " +
-//       req.body.name +
-//       " with details: " +
-//       req.body.description
-//   );
-// });
-
-// app.delete("/dishes/:dishId", (req, res, next) => {
-//   res.end("Deleting dish: " + req.params.dishId);
-// });
-
-// const dishRouter = require("./routes/dishRouter");
+const specs = swaggerJsDoc(options);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+// app.db = db;
+app.use(cors());
+app.use(morgan("dev"));
+ const dishRouter = require("./routes/dishRouter");
 const nationRouter = require("./routes/nationRouter");
 const playerRouter = require("./routes/playerRouter");
 
-// app.use("/dishes", dishRouter);
+app.use("/dishes", dishRouter);
 app.use("/nations", nationRouter);
 app.use("/players", playerRouter);
 
-app.use("/", (req, res, next) => {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/html");
-  res.end("<html><body><h1>This is an Express Server</h1></body></html>");
-});
+
+//connect to db using mongoose
+const db1 = require('./config/db');
+//connect to db
+db1.connect();
 
 const server = http.createServer(app);
 

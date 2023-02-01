@@ -5,6 +5,58 @@ const dishRouter = express.Router();
 
 dishRouter.use(bodyParser.json());
 
+const Dish = require("../model/Dish");
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Book:
+ *       type: object
+ *       required:
+ *         - title
+ *         - author
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the book
+ *         title:
+ *           type: string
+ *           description: The book title
+ *         author:
+ *           type: string
+ *           description: The book author
+ *       example:
+ *         id: d5fE_asz
+ *         title: The New Turing Omnibus
+ *         author: Alexander K. Dewdney
+ */
+
+ /**
+  * @swagger
+  * tags:
+  *   name: Books
+  *   description: The books managing API
+  */
+
+ /**
+ * @swagger
+ * /books:
+ *   get:
+ *     summary: Returns the list of all the books
+ *     tags: [Books]
+ *     responses:
+ *       200:
+ *         description: The list of the books
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Book'
+ */
+
+
 dishRouter
   .route("/")
   .all((req, res, next) => {
@@ -13,7 +65,12 @@ dishRouter
     next();
   })
   .get((req, res, next) => {
-    res.end("Will send all the dishes to you!");
+    // res.end("Will send all the dishes to you!");
+    Dish.find({}, function (err, dishes) {
+      if (!err) {
+        res.json(dishes);
+      } else res.status(400).json({ errors: "ERROR!" });
+    });
   })
   .post((req, res, next) => {
     res.end(
@@ -39,7 +96,7 @@ dishRouter
     next();
   })
   .get((req, res, next) => {
-    res.end("will send dishID "+req.params.dishId);
+    res.end("will send dishID " + req.params.dishId);
   })
   .post((req, res, next) => {
     res.end("POST operation not supported on /dishes/" + req.params.dishId);
