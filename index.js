@@ -2,7 +2,7 @@ const express = require("express"),
   http = require("http");
 
 const hostname = "localhost";
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
